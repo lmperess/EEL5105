@@ -4,16 +4,16 @@ use ieee.std_logic_unsigned.all;
 
 --para uso com o clock de 500Hz do FPGAEmu (CLK_500Hz)
 
-entity Div_Freq_Emu is
-
-	port (	clk: in std_logic;
-			reset: in std_logic;
-			CLK_1Hz: out std_logic;
-			Sim_1Hz: out std_logic);
-			
+entity Div_Freq_Emu is port(
+	clk: in std_logic;
+	reset: in std_logic;
+	CLK_1Hz: out std_logic;
+	Sim_1Hz: out std_logic
+        );	
 end Div_Freq_Emu;
 
 architecture divisor of Div_Freq_Emu is
+	
 	signal cont: std_logic_vector(11 downto 0); -- Registra valor da contagem
 	
 	begin
