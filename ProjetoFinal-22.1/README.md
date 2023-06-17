@@ -1,2 +1,1 @@
-# EEL5105-22.1
-Final Project
+# Projeto Final da disciplina Circuitos e Tecnicas Digitais no semestre 2022.2
