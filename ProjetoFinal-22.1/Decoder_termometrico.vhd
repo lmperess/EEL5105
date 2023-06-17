@@ -2,12 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity decoder_termometrico is port(
-    
     X: in  std_logic_vector(3 downto 0);
-    S: out std_Logic_vector(15 downto 0));
-    
+    S: out std_Logic_vector(15 downto 0)
+    );    
 end decoder_termometrico;
-
 
 architecture arc_decoder of decoder_termometrico is begin
 
