@@ -3,15 +3,14 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all; 
 
 entity datapath is port(
-
     SW: in std_logic_vector(17 downto 0);
     CLK: in std_logic;
-	 Enter_left, Enter_right: in std_logic;
+    Enter_left, Enter_right: in std_logic;
     R1, E1, E2, E3, E4, E5, E6: in std_logic;
-	 end_game, end_sequence, end_round, end_left, end_right: out std_logic;
+    end_game, end_sequence, end_round, end_left, end_right: out std_logic;
     HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0: out std_logic_vector(6 downto 0);
-    LEDR: out std_logic_vector(17 downto 0));
-
+    LEDR: out std_logic_vector(17 downto 0)
+    );
 end datapath;
 
 architecture arc_data of datapath is
@@ -36,171 +35,150 @@ signal sel_cnt, sel_mxledr: std_logic_vector(1 downto 0);
 signal mux_ctrlleft, saida_load_left, mux_ctrlright, saida_load_right: std_logic_vector(7 downto 0);
 signal CLK_1Hz, Sim_1Hz, enable_left, enable_right: std_logic;
 signal SWleft, SWRight: std_logic_vector(15 downto 0);
-
 signal left_penalty, right_penalty: std_logic_vector(7 downto 0);
-
 signal smux218_1, smux218_2, smux218_3, smux218_4: std_Logic_vector (7 downto 0); 
---signal Y: std_logic_vector (1 downto 0);
+-- signal Y: std_logic_vector (1 downto 0);
 
 
 ----- Components
 
-component decoder_termometrico is port(
-    
+component decoder_termometrico is port(    
     X: in  std_logic_vector(3 downto 0);
-    S: out std_Logic_vector(15 downto 0));
-    
+    S: out std_Logic_vector(15 downto 0)
+    );    
 end component;
 
-component Div_Freq_DE2 is
-	port (	    clk: in std_logic;
-				reset: in std_logic;
-				CLK_1Hz: out std_logic;
-				Sim_1Hz: out std_logic
-			);
+component Div_Freq_DE2 is port (
+	clk: in std_logic;
+	reset: in std_logic;
+	CLK_1Hz: out std_logic;
+	Sim_1Hz: out std_logic
+	);
 end component;
 
 component DecBCD is port (
-
 	input: in  std_logic_vector(7 downto 0);
-	output: out std_logic_vector(7 downto 0));
-
+	output: out std_logic_vector(7 downto 0)
+        );
 end component;
 
 component ROM0 is port (
-
     address: in  std_logic_vector(3 downto 0);
-    data: out std_logic_vector(79 downto 0));
-    
+    data: out std_logic_vector(79 downto 0)
+    );    
 end component;
 
 component ROM1 is port (
-
     address : in  std_logic_vector(3 downto 0);
-    data    : out std_logic_vector(79 downto 0));
-    
+    data    : out std_logic_vector(79 downto 0)
+    );    
 end component;
 
 component ROM2 is port (
-
     address : in  std_logic_vector(3 downto 0);
-    data    : out std_logic_vector(79 downto 0));
-    
+    data    : out std_logic_vector(79 downto 0)
+    );    
 end component;
 
 component ROM3 is port (
-
     address : in  std_logic_vector(3 downto 0);
-    data    : out std_logic_vector(79 downto 0));
-    
+    data    : out std_logic_vector(79 downto 0)
+    );    
 end component;
 
 component Comparador is port(
-    
     in0, in1: in  std_logic_vector(7 downto 0);
-    S       : out std_logic);
-    
+    S       : out std_logic
+    );    
 end component;
 
 component Mux2_1x4 is port(
-
     S     : in  std_logic;
     L0, L1: in  std_logic_vector(3 downto 0);
-    D     : out std_logic_vector(3 downto 0));
-    
+    D     : out std_logic_vector(3 downto 0)
+    );    
 end component;
 
 component Mux2_1x8 is port(
-
     S     : in  std_logic;
     L0, L1: in  std_logic_vector(7 downto 0);
-    D     : out std_logic_vector(7 downto 0));
-    
+    D     : out std_logic_vector(7 downto 0)
+    );    
 end component;
 
 component Mux4_1x8 is port(
-
     S             : in  std_logic_vector(1 downto 0);
     L0, L1, L2, L3: in  std_logic_vector(7 downto 0);
-    D             : out std_logic_vector(7 downto 0));
-    
+    D             : out std_logic_vector(7 downto 0)
+    );    
 end component;
 
 component Mux4_1x9 is port(
-
     S: in std_logic_vector(1 downto 0);
     L0, L1, L2, L3: in std_logic_vector(8 downto 0);
-    D: out std_logic_vector(8 downto 0));
-    
+    D: out std_logic_vector(8 downto 0)
+    );    
 end component;
 
 component Mux4_1x80 is port(
-
     S: in std_logic_vector(1 downto 0);
     L0, L1, L2, L3: in std_logic_vector(79 downto 0);
-    D: out std_logic_vector(79 downto 0));
-    
+    D: out std_logic_vector(79 downto 0)
+    );    
 end component;
 
 component decod7seg is port (
-
 	input  : in  std_logic_vector(3 downto 0);
-	output : out std_logic_vector(6 downto 0));
-
+	output : out std_logic_vector(6 downto 0)
+        );
 end component;
 
 component counter_round is port(
-
 	reset: in std_logic;
 	E: in std_logic;
 	clock: in std_logic;
 	Tc: out std_logic;
-	count: out std_logic_vector (3 downto 0));
-	
+	count: out std_logic_vector (3 downto 0)
+        );	
 end component;
 
 component counter_seq is port(
-
 	reset: in std_logic;
 	E: in std_logic;
 	clock: in std_logic;
 	Tc: out std_logic;
-	count: out std_logic_vector (1 downto 0));
-	
+	count: out std_logic_vector (1 downto 0)
+        );	
 end component;
 
 component Counter_Time is port(
-
 	clock: in std_logic;
 	set: in std_logic;
 	E: in std_logic;
 	load: in std_logic_vector(7 downto 0);
 	saida: out std_logic_vector(7 downto 0);
-	endtime: out std_logic);
-	
+	endtime: out std_logic
+        );	
 end component;
 
 component registrador_4 is port (
-
 	CLK, RST, enable: in std_logic;
 	D: in std_logic_vector(3 downto 0);
-	Q: out std_logic_vector(3 downto 0));
-	
+	Q: out std_logic_vector(3 downto 0)
+        );	
 end component;
 
 component registrador_16 is port (
-
 	CLK, RST, enable: in std_logic;
 	D: in std_logic_vector(15 downto 0);
-	Q: out std_logic_vector(15 downto 0));
-	
+	Q: out std_logic_vector(15 downto 0)
+        );	
 end component;
 
 begin
 
 HK <= (((E3 and CLK_1Hz) and (not Enter_left)) or E4);
 KH <= (((E3 and CLK_1Hz) and (not Enter_right)) or E4);
-
 
 -- Contadores:
 
@@ -252,7 +230,6 @@ ROM_3: ROM3 port map(X, saida_rom3);
 DecBCD_1: DecBCD port map (T_Left_out, T_left_BCD);
 DecBCD_2: DecBCD port map (T_Right_out, T_Right_BCD);
 DecTermom: decoder_termometrico port map (X, Termo);
-
 
 ------ HEX's:
 
@@ -307,12 +284,11 @@ mx_1hx0: mux2_1x4 port map(E1, "1111", mxsel_lsb, mx_1hex0);
 mx_2hx0: mux2_1x4 port map(E2_and_X0, mx_1hex0, Seq_out_right(3 downto 0), mx_2hex0);
 d7_hx0: decod7seg port map(mx_2hex0, HEX0);
 
----- Muxes LEDR
+---- Mux's LEDR
 
 sel_mxledr <= (E5 or E6) & ((E2 and not(X(0))) or E6);
 mx_time_left <= pisca when end_time_left = '0' else "000000000";
 mx_time_right <= pisca when end_time_right = '0' else "000000000";
-
 
 mx_sqoutl <= seq_out_left & '0';
 mx_sqoutr <= '0' & seq_out_right;
@@ -320,15 +296,11 @@ mx_trm <= "00" & termo(15 downto 9);
 mxlrmsb: Mux4_1x9 port map(sel_mxledr, "000000000", mx_sqoutl, mx_trm, mx_time_left, LEDR(17 downto 9));
 mxlrlsb: Mux4_1x9 port map(sel_mxledr, "000000000", mx_sqoutr, termo(8 downto 0), mx_time_right, LEDR(8 downto 0));
 
-
 ---- Sinais/Entradas logicas
 
 end_left <= Enter_left;   --como entradas e saidas nao podem ter o mesmo nome, foram chamadas de "end_left" e "end_right",
 end_right <= Enter_right; --mas no resto do projeto continuam sendo Enter_left e Enter_right.
 pisca <= "111111111" and (Sim_1Hz & Sim_1Hz & Sim_1Hz & Sim_1Hz & Sim_1Hz & Sim_1Hz & Sim_1Hz & Sim_1Hz & Sim_1Hz);
-
-
------------------------------------- FAZER ----------------------------------------
 
 end_game <= end_time_left or end_time_right;
 
