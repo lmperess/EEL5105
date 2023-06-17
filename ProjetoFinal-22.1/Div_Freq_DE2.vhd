@@ -4,15 +4,16 @@ use ieee.std_logic_unsigned.all;
 
 --para uso com o clock de 50MHz da placa DE2 (CLOCK_50)
 
-entity Div_Freq_DE2 is
-	port (	    clk: in std_logic;
-				reset: in std_logic;
-				CLK_1Hz: out std_logic;
-				Sim_1Hz: out std_logic
-			);
+entity Div_Freq_DE2 is port(
+	clk: in std_logic;
+	reset: in std_logic;
+	CLK_1Hz: out std_logic;
+	Sim_1Hz: out std_logic
+	);
 end Div_Freq_DE2;
 
 architecture divisor of Div_Freq_DE2 is
+	
 	signal cont: std_logic_vector(27 downto 0); -- Registra valor da contagem
 	
 	begin
