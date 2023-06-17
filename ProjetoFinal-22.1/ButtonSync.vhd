@@ -2,12 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all; 
 
 entity ButtonSync is port(
-
     KEY1, KEY0, CLK: in  std_logic;
-    BTN1, BTN0   : out std_logic);
-
+    BTN1, BTN0   : out std_logic
+    );
 end ButtonSync;
-
 
 architecture ButtonSyncImpl of ButtonSync is
 
@@ -16,7 +14,6 @@ signal BTN1_state, BTN0_state: STATES := EsperaApertar;
 signal BTN1_next, BTN0_next: STATES := EsperaApertar;
 
 begin
-
 
 	process (clk) 
 	begin
@@ -58,5 +55,4 @@ begin
 		end case;		
 	end process;
 
-	
 end ButtonSyncImpl;
