@@ -6,7 +6,7 @@ entity registrador_16bits is port (
   D: in std_logic_vector(15 downto 0);
   Q: out std_logic_vector(15 downto 0)
   );
-end registrador_16;
+end registrador_16bits;
 
 architecture rgt_16bits of registrador_16bits is
 begin
