@@ -1,4 +1,4 @@
-# Projeto Final - 2022.2
+# Projeto Final - 2022.1
 
 Projeto final da parte prática da disciplina Circuitos e Tecnicas Digitais, ministrada pelo professor John Jairo Villarejo Mayor, no semestre 2022.1.
 
