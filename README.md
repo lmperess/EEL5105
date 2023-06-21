@@ -1,2 +1,1 @@
-# EEL5105
-Final Project
+# EEL5105 - Circuitos e Técnicas Digitais
